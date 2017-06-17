@@ -14,6 +14,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.stylingandroid.location.services.CommonLocation;
 
 public class LocationProvider implements LifecycleObserver {
     private final Context context;
@@ -66,7 +67,8 @@ public class LocationProvider implements LifecycleObserver {
             double latitude = lastLocation.getLatitude();
             double longitude = lastLocation.getLongitude();
             float accuracy = lastLocation.getAccuracy();
-            locationListener.updateLocation(latitude, longitude, accuracy);
+            CommonLocation location = new CommonLocation(latitude, longitude, accuracy);
+            locationListener.updateLocation(location);
         }
     };
 
