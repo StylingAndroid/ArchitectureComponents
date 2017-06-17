@@ -43,10 +43,10 @@ public class LocationFragment extends LifecycleFragment implements LocationListe
     }
 
     @Override
-    public void updateLocation(double latitude, double longitude, float accuracy) {
-        String latitudeString = createFractionString(latitude);
-        String longitudeString = createFractionString(longitude);
-        String accuracyString = createAccuracyString(accuracy);
+    public void updateLocation(CommonLocation location) {
+        String latitudeString = createFractionString(location.getLatitude());
+        String longitudeString = createFractionString(location.getLongitude());
+        String accuracyString = createAccuracyString(location.getAccuracy());
         latitudeValue.setText(latitudeString);
         longitudeValue.setText(longitudeString);
         accuracyValue.setText(accuracyString);
