@@ -1,0 +1,74 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  tools:context="com.stylingandroid.location.services.LocationFragment"
+  tools:showIn=".MainActivity"
+  android:padding="8dp">
+
+  <TextView
+    android:id="@+id/latitude_label"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:gravity="end"
+    android:text="@string/latitude_label"
+    tools:text="Latitude" />
+
+  <TextView
+    android:id="@+id/longitude_label"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    app:layout_constraintTop_toBottomOf="@id/latitude_label"
+    app:layout_constraintStart_toStartOf="@id/latitude_label"
+    android:gravity="end"
+    android:text="@string/longitude_label"
+    tools:text="Longitude" />
+
+  <TextView
+    android:id="@+id/accuracy_label"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    app:layout_constraintTop_toBottomOf="@id/longitude_label"
+    app:layout_constraintStart_toStartOf="@id/latitude_label"
+    android:gravity="end"
+    android:text="@string/accuracy_label"
+    tools:text="Accuracy" />
+
+  <TextView
+    android:id="@+id/latitude_value"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    app:layout_constraintBaseline_toBaselineOf="@id/latitude_label"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/label_barrier" />
+
+  <TextView
+    android:id="@+id/longitude_value"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBaseline_toBaselineOf="@id/longitude_label"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/latitude_value" />
+
+  <TextView
+    android:id="@+id/accuracy_value"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBaseline_toBaselineOf="@id/accuracy_label"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/latitude_value" />
+
+  <android.support.constraint.Barrier
+    android:id="@+id/label_barrier"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:barrierDirection="end"
+    app:constraint_referenced_ids="latitude_label,longitude_label,accuracy_label" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+ext {
+    supportLibraryVersion = "25.4.0"
+    playServicesVersion = "11.0.0"
+    architectureComponentsVersion = "1.0.0-alpha3"
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.stylingandroid.location.services"
+        minSdkVersion 17
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        disable 'OldTargetApi', "GradleDependency"
+    }
+    productFlavors {
+        dummy
+        playServices
+    }
+}
+
+dependencies {
+    compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
+    compile "com.android.support:design:${supportLibraryVersion}"
+    compile "com.android.support:support-v4:${supportLibraryVersion}"
+    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
+    compile "android.arch.lifecycle:runtime:${architectureComponentsVersion}"
+    compile "android.arch.lifecycle:extensions:${architectureComponentsVersion}"
+    annotationProcessor "android.arch.lifecycle:compiler:${architectureComponentsVersion}"
+    playServicesCompile "com.google.android.gms:play-services-location:${playServicesVersion}"
+}
+
+apply from: '../config/static_analysis.gradle'
