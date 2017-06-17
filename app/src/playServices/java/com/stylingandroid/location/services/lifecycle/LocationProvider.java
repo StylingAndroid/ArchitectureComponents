@@ -1,13 +1,15 @@
 package com.stylingandroid.location.services.lifecycle;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -30,9 +32,12 @@ public class LocationProvider implements LifecycleObserver {
         lifecycle.addObserver(this);
     }
 
-    @SuppressLint("MissingPermission")
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     void registerForLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         FusedLocationProviderClient locationProviderClient = getFusedLocationProviderClient();
         LocationRequest locationRequest = LocationRequest.create();
         Looper looper = Looper.myLooper();
