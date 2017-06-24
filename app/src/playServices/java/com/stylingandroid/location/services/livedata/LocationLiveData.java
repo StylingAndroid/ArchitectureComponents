@@ -1,9 +1,7 @@
-package com.stylingandroid.location.services.lifecycle;
+package com.stylingandroid.location.services.livedata;
 
 import android.Manifest;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -18,22 +16,18 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.stylingandroid.location.services.CommonLocation;
 
-public class LocationProvider implements LifecycleObserver {
+public class LocationLiveData extends LiveData<CommonLocation> {
     private final Context context;
-    private final Lifecycle lifecycle;
-    private final LocationListener locationListener;
 
     private FusedLocationProviderClient fusedLocationProviderClient = null;
 
-    public LocationProvider(@NonNull Context context, Lifecycle lifecycle, @NonNull LocationListener listener) {
+    public LocationLiveData(Context context) {
         this.context = context;
-        this.lifecycle = lifecycle;
-        this.locationListener = listener;
-        lifecycle.addObserver(this);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    void registerForLocationUpdates() {
+    @Override
+    protected void onActive() {
+        super.onActive();
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -52,29 +46,23 @@ public class LocationProvider implements LifecycleObserver {
         return fusedLocationProviderClient;
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    void unregisterForLocationUpdates() {
+    @Override
+    protected void onInactive() {
         if (fusedLocationProviderClient != null) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         }
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    void unregisterObserver() {
-        lifecycle.removeObserver(this);
+        super.onInactive();
     }
 
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            super.onLocationResult(locationResult);
-            Location lastLocation = locationResult.getLastLocation();
-            double latitude = lastLocation.getLatitude();
-            double longitude = lastLocation.getLongitude();
-            float accuracy = lastLocation.getAccuracy();
+            Location newLocation = locationResult.getLastLocation();
+            double latitude = newLocation.getLatitude();
+            double longitude = newLocation.getLongitude();
+            float accuracy = newLocation.getAccuracy();
             CommonLocation location = new CommonLocation(latitude, longitude, accuracy);
-            locationListener.updateLocation(location);
+            setValue(location);
         }
     };
-
 }
