@@ -3,10 +3,13 @@ package com.stylingandroid.location.services;
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +27,13 @@ public class LocationFragment extends LifecycleFragment implements LocationListe
     private TextView longitudeValue;
     private TextView accuracyValue;
 
+    private ViewModelProvider viewModelProvider = null;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        LocationViewModel locationViewModel = ViewModelProviders.of(getActivity()).get(LocationViewModel.class);
+        FragmentActivity activity = getActivity();
+        LocationViewModel locationViewModel = getViewModelProvider(activity).get(LocationViewModel.class);
         LiveData<CommonLocation> liveData = locationViewModel.getLocation(context);
         liveData.observe(this, new Observer<CommonLocation>() {
             @Override
@@ -35,6 +41,18 @@ public class LocationFragment extends LifecycleFragment implements LocationListe
                 updateLocation(commonLocation);
             }
         });
+    }
+
+    @VisibleForTesting
+    void setViewModelProvider(ViewModelProvider viewModelProvider) {
+        this.viewModelProvider = viewModelProvider;
+    }
+
+    private ViewModelProvider getViewModelProvider(FragmentActivity activity) {
+        if (viewModelProvider == null) {
+            viewModelProvider = ViewModelProviders.of(activity);
+        }
+        return viewModelProvider;
     }
 
     @Override
