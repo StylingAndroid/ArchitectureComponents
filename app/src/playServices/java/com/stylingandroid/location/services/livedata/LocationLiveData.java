@@ -16,6 +16,9 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.stylingandroid.location.services.CommonLocation;
 
+import hugo.weaving.DebugLog;
+
+@DebugLog
 public class LocationLiveData extends LiveData<CommonLocation> {
     private final Context context;
 

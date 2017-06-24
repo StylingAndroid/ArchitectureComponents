@@ -3,6 +3,7 @@ package com.stylingandroid.location.services;
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.stylingandroid.location.services.lifecycle.LocationListener;
-import com.stylingandroid.location.services.livedata.LocationLiveData;
 
 import java.util.Locale;
 
@@ -27,7 +27,8 @@ public class LocationFragment extends LifecycleFragment implements LocationListe
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        LiveData<CommonLocation> liveData = new LocationLiveData(context);
+        LocationViewModel locationViewModel = ViewModelProviders.of(getActivity()).get(LocationViewModel.class);
+        LiveData<CommonLocation> liveData = locationViewModel.getLocation(context);
         liveData.observe(this, new Observer<CommonLocation>() {
             @Override
             public void onChanged(@Nullable CommonLocation commonLocation) {
