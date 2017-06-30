@@ -20,9 +20,4 @@ public class LocationLiveData extends LiveData<CommonLocation> {
         super.onActive();
         setValue(LOCATION);
     }
-
-    @Override
-    protected void onInactive() {
-        super.onInactive();
-    }
 }
