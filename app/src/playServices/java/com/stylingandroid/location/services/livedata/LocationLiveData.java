@@ -51,7 +51,6 @@ public class LocationLiveData extends LiveData<CommonLocation> {
         if (fusedLocationProviderClient != null) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         }
-        super.onInactive();
     }
 
     private LocationCallback locationCallback = new LocationCallback() {
